@@ -1,0 +1,344 @@
+<!DOCTYPE html> 
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Database Application</title>
+    
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    
+        <style>
+            body {
+                font-family: 'Arial', sans-serif;
+                margin: 0;
+                padding: 0;
+                background-color: #f4f4f9;
+                color: #333;
+            }
+            h1 {
+                background-color: #2E7D32; 
+                color: white;
+                font-size: 36px;
+                font-weight: 700;
+                text-align: center;
+                padding: 20px;
+                margin: 0;
+                border-radius: 8px;  
+                letter-spacing: 2px;
+            }
+    
+            h2 {
+                color: #007e04;
+                text-align: center;
+                margin-top: 30px;
+            }
+    
+            .container {
+                width: 90%;
+                margin: 0 auto;
+                padding: 20px;
+            }
+    
+            button {
+                background-color: #003e02;
+                color: white;
+                border: none;
+                padding: 10px 20px;
+                margin: 10px;
+                cursor: pointer;
+                border-radius: 5px;
+                font-size: 16px;
+                transition: background-color 0.3s;
+            }
+    
+            button:hover {
+                background-color: #45a049;
+            }
+    
+            table {
+                width: 100%;
+                margin-top: 20px;
+                border-collapse: collapse;
+            }
+    
+            table, th, td {
+                border: 1px solid #ddd;
+            }
+    
+            th, td {
+                padding: 12px;
+                text-align: left;
+            }
+    
+            th {
+                background-color: #4CAF50;
+                color: white;
+            }
+    
+            input[type="text"], input[type="number"], input[type="date"], input[type="time"], select {
+                width: 100%;
+                padding: 10px;
+                margin: 10px 0;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+            }
+    
+            form {
+                background-color: #fff;
+                padding: 20px;
+                border-radius: 5px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            }
+    
+            .form-section {
+                margin-bottom: 20px;
+            }
+    
+            .form-section label {
+                display: block;
+                font-weight: bold;
+                margin-bottom: 5px;
+            }
+    
+            .form-section input, .form-section select {
+                width: calc(100% - 20px);
+            }
+    
+            .form-section button {
+                width: 100%;
+            }
+    
+            .form-container {
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+            }
+    
+        </style>
+    </head>
+<head>
+    <meta charset="UTF-8">
+    <!-- This meta tag ensures that the website renders correctly across different device sizes, enhancing mobile responsiveness. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Link to the external CSS stylesheet. Uncomment if you wish to customize or add styling. -->
+    <!-- <link rel="stylesheet" href="styles.css">   -->
+
+    <title>Database Application</title>
+</head>
+<body>
+    <h1> Welcome to the Pet Adoption Agency!</h1>
+
+    <!-- ===================================================================================== -->
+    <!-- Display the current status of the database connection. 
+         !!HERE TO HELP U DEBUGGING, NOT REQUIRED IN YOUR OWN PROJECT!!
+         -->
+
+    <h2>Find Cities with Above Average Donations</h2>
+    <button id="findCitiesBtn">Find Cities</button> <br><br>
+    <div id="citiesResultMsg"></div>
+    <table id="citiesTable" border="1" style="display:none;">
+        <thead>
+            <tr>
+                <th>City</th>
+                <th>Average Donation</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <br><hr><br> <!-- ========================================================================= -->
+
+    <h2>Book Appointment</h2>
+    <form id="bookAppointmentForm">
+        Appointment Date: <input type="date" id="appointmentDate" required> <br><br>
+        Appointment Time: <input type="time" id="appointmentTime" required> <br><br>
+        Adopter ID: <input type="number" id="adopterId" required> <br><br>
+        Pet ID: <input type="number" id="petId" required> <br><br>
+
+        <button type="submit">Book Appointment</button> <br>
+    </form>
+    <div id="appointmentResultMsg"></div>
+
+    <br><hr><br> <!-- ========================================================================= -->
+
+    <h2>Current Adopters</h2>
+    <table id="adoptersTable" border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Address</th>
+                <th>City</th>
+                <th>Postal Code</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <h2>Update Adopter Information</h2>
+    <form id="updateAdopterForm">
+        Adopter ID: <input type="number" id="updateAdopterId" required> <br><br>
+        Field to Update: 
+        <select id="updateField" required>
+            <option value="">--Select Field--</option>
+            <option value="AdopterName">Name</option>
+            <option value="Email">Email</option>
+            <option value="Address">Address</option>
+            <option value="City">City</option>
+            <option value="PostalCode">Postal Code</option>
+        </select> <br><br>
+        New Value: <input type="text" id="updateValue" required> <br><br>
+
+        <button type="submit">Update</button> <br>
+    </form>
+    <div id="updateAdopterResultMsg"></div>
+
+
+    <br><hr><br> <!-- ========================================================================= -->
+
+    <h2> What pets play all games? Lets find out!!!</h2>
+    <button id="fetchPetsThatPlayAllGames"> Find the pets! </button> <br><br>
+    <table id="allGamesPetsList" border="1">
+        <thead>
+            <tr>
+                <th>Pet Name</th>
+                <th>Pet Id</th>
+            </tr>
+        </thead>
+        <tbody></tbody> <!-- Data will be inserted here -->
+    </table> <br>
+
+    <br><hr><br> <!-- ========================================================================= -->
+
+
+    <h2> What breeds are there with AT LEAST 3 pets? Lets find out!!!</h2>
+    <button id="fetchBreedWithAtLeast3Pets"> Find the breeds! </button> <br><br>
+    <table id="breedsWith3PetsList" border="1">
+        <thead>
+            <tr>
+                <th>Breed Name</th>
+                <th>Pet Count</th>
+            </tr>
+        </thead>
+        <tbody></tbody> <!-- Data will be inserted here -->
+    </table> <br>
+
+    <br><hr><br> <!-- ========================================================================= -->
+
+
+    <h2>Find Breeds Matching Your Criteria!</h2>
+    <p>Enter a breed !!!</p>
+    <form id="fetchBreedsSelection">
+        <div id="conditionsContainer">
+            <div class="condition">
+                <select class="attribute">
+                    <option value="BreedName">Breed Name</option>
+                    <option value="CoatColor">Coat Color</option>
+                    <option value="Nature">Nature</option>
+                </select>
+                
+                <input type="text" class="valueInput" placeholder="Enter value" required>
+                
+                <!-- <select class="logicOperator">
+                    <option value="AND">AND</option>
+                    <option value="OR">OR</option>
+                </select> -->
+            </div>
+        </div>
+        
+        <button type="button" id="addCondition"> Add Condition</button>
+        <button type="submit">Search</button>
+    </form>
+    <!-- A placeholder to display messages related to the update operation. -->
+    <table id="breedPetsList" border="1">
+        <thead>
+            <tr>
+                <th>Breed Name</th>
+                <th>Coat Color</th>
+                <th>Nature</th>
+            </tr>
+        </thead>
+        <tbody></tbody> <!-- Data will be inserted here -->
+    </table>
+
+    <br><hr><br> <!-- ========================================================================= -->
+
+
+    <h2>How many pets are there per each breed? LETS FIND OUT!!!</h2>
+
+    <div>
+        <button id="fetchPetCountByBreed">Get Pet Count by Breed</button>
+        <div id="query7ResultMsg"></div>
+        <table id="petCountByBreedTable">
+            <thead>
+                <tr>
+                    <th>Breed Name</th>
+                    <th>Count</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Results -->
+            </tbody>
+        </table>
+    </div>
+
+    <br><hr><br> <!-- ========================================================================= -->
+
+
+    <h2>Delete Pet by ID</h2>
+    <form id="deletePet">
+    Pet ID: <input type="number" id="deletePetId" placeholder="Enter Pet ID" required> <br><br>
+    <button type="submit">Delete Pet</button> <br>
+    </form>
+    <div id="deleteResultMsg"></div>
+
+    <br><hr><br> <!-- ========================================================================= -->
+
+
+    <h2>Projection Query - Select Attributes to View</h2>
+<form id="projectionForm">
+    <label>Select Attributes (Hold CTRL or CMD to select multiple):</label><br><br>
+    <select id="projectionAttributes" multiple>
+        <option value="PETID">Pet ID</option>
+        <option value="CITY">City</option>
+        <option value="AGE">Age</option>
+        <option value="STATUS">Status</option>
+    </select>
+    <br><br>
+    <button type="submit">Run Projection Query</button>
+</form>
+<div id="projectionResultMsg"></div>
+<table id="projectionResultTable" border="1">
+    <thead>
+        <tr id="projectionHeaders"></tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+
+    <br><hr><br> <!-- ========================================================================= -->
+
+
+    <h2>Find Pets by Breed</h2>
+    <input type="text" id="breedNameInput" placeholder="Enter Breed Name">
+    <button id="fetchPetsByBreed">Get Pets by Breed</button>
+    <div id="query6ResultMsg"></div>
+    <table id="petsByBreedTable">
+        <thead>
+            <tr>
+                <th>Pet ID</th>
+                <th>Pet Name</th>
+                <th>Breed Name</th>
+            </tr>
+        </thead>
+        <tbody>
+        <!-- Results -->
+        </tbody>
+    </table>
+
+    <!-- External JavaScript file that contains the functionality/logic for the operations above. -->
+    <script src="scripts.js"></script>
+</body>
+</html>
